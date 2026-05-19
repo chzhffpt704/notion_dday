@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D-Day</title>
+  </head>
+
+  <body
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: transparent;
+      overflow: hidden;
+    "
+  ></body>
+
+  <!-- Day.js -->
+  <script src="https://unpkg.com/dayjs@1.11.20/dayjs.min.js"></script>
+
+  <script>
+    window.onload = function () {
+      const params = new URLSearchParams(window.location.search);
+
+      // 목표 날짜
+      const targetDateString =
+        params.get("target") || "2026-12-31";
+
+      // 스타일 옵션
+      const color = params.get("color") || "black";
+      const size = params.get("size") || "64";
+      const align = params.get("align") || "center";
+
+      const target = dayjs(targetDateString);
+      const now = dayjs();
+
+      // 날짜 차이 계산
+      const diff = target.diff(now, "day");
+
+      const h1 = document.createElement("h1");
+
+      // D-Day 표시
+      if (diff > 0) {
+        h1.innerText = `D-${diff}`;
+      } else if (diff < 0) {
+        h1.innerText = `D+${Math.abs(diff)}`;
+      } else {
+        h1.innerText = "D-Day";
+      }
+
+      // 스타일 적용
+      h1.style.color = color;
+      h1.style.fontSize = `${size}px`;
+      h1.style.textAlign = align;
+      h1.style.margin = "0";
+
+      document.body.append(h1);
+    };
+  </script>
+</html>
