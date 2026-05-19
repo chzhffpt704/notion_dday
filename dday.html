@@ -15,6 +15,7 @@
       margin: 0;
       background: transparent;
       overflow: hidden;
+      font-family: sans-serif;
     "
   ></body>
 
@@ -26,36 +27,62 @@
       const params = new URLSearchParams(window.location.search);
 
       // 목표 날짜
-      const targetDateString =
+      const targetDate =
         params.get("target") || "2026-12-31";
 
-      // 스타일 옵션
-      const color = params.get("color") || "black";
-      const size = params.get("size") || "64";
-      const align = params.get("align") || "center";
+      // 표시할 내용
+      const content =
+        params.get("content") || "시험까지";
 
-      const target = dayjs(targetDateString);
+      // 스타일 옵션
+      const color =
+        params.get("color") || "#000000";
+
+      const background =
+        params.get("background") || "transparent";
+
+      const size =
+        params.get("size") || "64";
+
+      const weight =
+        params.get("weight") || "700";
+
+      const align =
+        params.get("align") || "center";
+
+      // 날짜 계산
+      const target = dayjs(targetDate);
       const now = dayjs();
 
-      // 날짜 차이 계산
       const diff = target.diff(now, "day");
 
+      // 텍스트 생성
+      let resultText = "";
+
+      if (diff > 0) {
+        resultText =
+          `${content} ${diff}일 남았습니다!`;
+      } else if (diff < 0) {
+        resultText =
+          `${content} ${Math.abs(diff)}일 지났습니다!`;
+      } else {
+        resultText =
+          `${content} 오늘입니다!`;
+      }
+
+      // 요소 생성
       const h1 = document.createElement("h1");
 
-      // D-Day 표시
-      if (diff > 0) {
-        h1.innerText = `D-${diff}`;
-      } else if (diff < 0) {
-        h1.innerText = `D+${Math.abs(diff)}`;
-      } else {
-        h1.innerText = "D-Day";
-      }
+      h1.innerText = resultText;
 
       // 스타일 적용
       h1.style.color = color;
       h1.style.fontSize = `${size}px`;
+      h1.style.fontWeight = weight;
       h1.style.textAlign = align;
       h1.style.margin = "0";
+
+      document.body.style.backgroundColor = background;
 
       document.body.append(h1);
     };
